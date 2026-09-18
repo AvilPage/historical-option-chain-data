@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: "30 18 * * *" # 00:00 IST
   workflow_dispatch:
+    inputs:
+      from_date:
+        description: "Start date (YYYY-MM-DD), optional"
+        required: false
+      to_date:
+        description: "End date (YYYY-MM-DD), optional"
+        required: false
 
 permissions:
   contents: write
@@ -34,7 +41,10 @@ jobs:
         run: uv sync --frozen
 
       - name: Run daily FO update
-        run: uv run data.py --type fo
+        run: >
+          uv run data.py --type fo
+          ${{ github.event.inputs.from_date && format('--from-date {0}', github.event.inputs.from_date) || '' }}
+          ${{ github.event.inputs.to_date && format('--to-date {0}', github.event.inputs.to_date) || '' }}
 
       - name: Commit and push if changed
         run: |
