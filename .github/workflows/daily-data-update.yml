@@ -46,6 +46,9 @@ jobs:
           ${{ github.event.inputs.from_date && format('--from-date {0}', github.event.inputs.from_date) || '' }}
           ${{ github.event.inputs.to_date && format('--to-date {0}', github.event.inputs.to_date) || '' }}
 
+      - name: Rebuild manifest
+        run: uv run generate_manifest.py
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
