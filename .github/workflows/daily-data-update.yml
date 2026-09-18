@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   update-data:
-    runs-on: 9apes
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
